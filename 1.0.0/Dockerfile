@@ -2,17 +2,15 @@ FROM openjdk:8-jre
 
 MAINTAINER Tim Thompson (https://github.com/)
 
-# Updating container
+# Run Updates
 RUN apt-get update && \
 	apt-get install apt-utils --yes && \
 	apt-get upgrade --yes --allow-remove-essential && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
-# Setting workdir
 WORKDIR /minecraft
 
-# Creating user and downloading files
 RUN useradd -m -U minecraft && \
 	mkdir -p /minecraft/world && \
 	wget --no-check-certificate https://api.modpacks.ch/public/modpack/80/225/server/linux -O serverinstall_80_225 && \
@@ -34,7 +32,7 @@ USER minecraft
 EXPOSE 25565
 
 # Expose volume
-VOLUME ["/minecraft/world"]
+VOLUME ["/minecraft"]
 
 # Start server
 CMD ["/bin/bash", "/minecraft/start.sh"]
